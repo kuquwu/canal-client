@@ -2,7 +2,7 @@ package top.javatool.canal.client.model;
 
 /**
  * @author yang peng
- * @date 2019/3/2711:21
+ * @since 2019/3/2711:21
  */
 public class CanalModel {
 

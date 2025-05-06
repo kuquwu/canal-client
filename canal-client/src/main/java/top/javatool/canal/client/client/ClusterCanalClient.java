@@ -2,7 +2,6 @@ package top.javatool.canal.client.client;
 
 import com.alibaba.otter.canal.client.CanalConnector;
 import com.alibaba.otter.canal.client.CanalConnectors;
-
 import org.apache.commons.lang.StringUtils;
 import top.javatool.canal.client.handler.MessageHandler;
 
@@ -15,10 +14,10 @@ import java.util.stream.Stream;
 public class ClusterCanalClient extends AbstractCanalClient {
 
 
-
-
     public static final class Builder {
         private String filter = StringUtils.EMPTY;
+        private String dbName = StringUtils.EMPTY;
+        private Boolean logEnable = Boolean.FALSE;
         private Integer batchSize = 1;
         private Long timeout = 1L;
         private TimeUnit unit = TimeUnit.SECONDS;
@@ -75,6 +74,16 @@ public class ClusterCanalClient extends AbstractCanalClient {
             return this;
         }
 
+        public Builder dbName(String dbName) {
+            this.dbName = dbName;
+            return this;
+        }
+
+        public Builder logEnable(Boolean logEnable) {
+            this.logEnable = logEnable;
+            return this;
+        }
+
         public Builder messageHandler(MessageHandler messageHandler) {
             this.messageHandler = messageHandler;
             return this;
@@ -93,6 +102,8 @@ public class ClusterCanalClient extends AbstractCanalClient {
             clusterCanalClient.unit = this.unit;
             clusterCanalClient.batchSize = this.batchSize;
             clusterCanalClient.timeout = this.timeout;
+            clusterCanalClient.dbName = this.dbName;
+            clusterCanalClient.logEnable = this.logEnable;
             return clusterCanalClient;
         }
     }

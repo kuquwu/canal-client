@@ -68,6 +68,8 @@ public class ZookeeperClientAutoConfiguration {
                 .filter(canalSimpleProperties.getFilter())
                 .timeout(canalSimpleProperties.getTimeout())
                 .unit(canalSimpleProperties.getUnit())
+                .dbName(canalSimpleProperties.getDbName())
+                .logEnable(canalSimpleProperties.getLogEnable())
                 .messageHandler(messageHandler)
                 .build();
     }

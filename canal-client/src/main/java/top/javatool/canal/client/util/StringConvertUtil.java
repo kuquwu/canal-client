@@ -1,6 +1,7 @@
 package top.javatool.canal.client.util;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -24,16 +25,28 @@ public class StringConvertUtil {
         if (columnValue == null) {
             return null;
         } else if (type.equals(Integer.class)) {
+            if (StringUtils.isBlank(columnValue)) {
+                return null;
+            }
             return Integer.parseInt(columnValue);
         } else if (type.equals(Long.class)) {
+            if (StringUtils.isBlank(columnValue)) {
+                return null;
+            }
             return Long.parseLong(columnValue);
         } else if (type.equals(Boolean.class)) {
             return convertToBoolean(columnValue);
         } else if (type.equals(BigDecimal.class)) {
             return new BigDecimal(columnValue);
         } else if (type.equals(Double.class)) {
+            if (StringUtils.isBlank(columnValue)) {
+                return null;
+            }
             return Double.parseDouble(columnValue);
         } else if (type.equals(Float.class)) {
+            if (StringUtils.isBlank(columnValue)) {
+                return null;
+            }
             return Float.parseFloat(columnValue);
         } else if (type.equals(Date.class)) {
             return parseDate(columnValue);

@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author yang peng
- * @date 2019/3/2910:45
+ * @since 2019/3/2910:45
  */
 
 public class GenericUtil {

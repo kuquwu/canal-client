@@ -6,13 +6,12 @@ import top.javatool.canal.client.handler.AbstractMessageHandler;
 import top.javatool.canal.client.handler.EntryHandler;
 import top.javatool.canal.client.handler.RowDataHandler;
 
-
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 /**
  * @author yang peng
- * @date 2019/3/2921:40
+ * @since 2019/3/2921:40
  */
 public class AsyncMessageHandlerImpl extends AbstractMessageHandler {
 
@@ -26,7 +25,7 @@ public class AsyncMessageHandlerImpl extends AbstractMessageHandler {
     }
 
     @Override
-    public void handleMessage(Message message) {
-        executor.execute(() -> super.handleMessage(message));
+    public void handleMessage(Message message, String dbName) {
+        executor.execute(() -> super.handleMessage(message, dbName));
     }
 }

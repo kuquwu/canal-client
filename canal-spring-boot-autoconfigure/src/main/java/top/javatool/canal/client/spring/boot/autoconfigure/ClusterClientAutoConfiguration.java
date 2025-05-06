@@ -68,6 +68,8 @@ public class ClusterClientAutoConfiguration {
                 .batchSize(canalSimpleProperties.getBatchSize())
                 .filter(canalSimpleProperties.getFilter())
                 .timeout(canalSimpleProperties.getTimeout())
+                .logEnable(canalSimpleProperties.getLogEnable())
+                .dbName(canalSimpleProperties.getDbName())
                 .unit(canalSimpleProperties.getUnit()).build();
     }
 }

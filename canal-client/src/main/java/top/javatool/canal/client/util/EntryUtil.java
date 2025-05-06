@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author yang peng
- * @date 2019/3/2915:07
+ * @since 2019/3/2915:07
  */
 public class EntryUtil {
 
@@ -28,23 +28,33 @@ public class EntryUtil {
      * @param c class
      * @return map
      */
-    public static Map<String, String> getFieldName(Class c) {
+    public static Map<String, String> getFieldName(Class c, boolean isLowerCamel) {
         Map<String, String> map = cache.get(c);
         if (map == null) {
             List<Field> fields = FieldUtils.getAllFieldsList(c);
             //如果实体类中存在column 注解，则使用column注解的名称为字段名
             map = fields.stream().filter(EntryUtil::notTransient)
                     .filter(field -> !Modifier.isStatic(field.getModifiers()))
-                    .collect(Collectors.toMap(EntryUtil::getColumnName, Field::getName));
+                    .collect(Collectors.toMap(field -> getColumnName(field, isLowerCamel), Field::getName));
             cache.putIfAbsent(c, map);
         }
         return map;
     }
 
+    /**
+     * 获取字段名称和实体属性的对应关系
+     *
+     * @param c class
+     * @return map
+     */
+    public static Map<String, String> getFieldName(Class c) {
+        return getFieldName(c, true);
+    }
 
-    private static String getColumnName(Field field) {
+
+    private static String getColumnName(Field field, boolean isLowerCamel) {
         Column annotation = field.getAnnotation(Column.class);
-        return annotation != null ? annotation.name() : CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName());
+        return annotation != null ? annotation.name() : isLowerCamel ? CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName()) : field.getName();
     }
 
     private static boolean notTransient(Field field) {

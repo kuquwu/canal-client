@@ -2,7 +2,6 @@ package top.javatool.canal.client.client;
 
 import com.alibaba.otter.canal.client.kafka.KafkaCanalConnector;
 import com.alibaba.otter.canal.protocol.FlatMessage;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author yang peng
- * @date 2019/3/2910:02
+ * @since 2019/3/2910:02
  */
 
 public class KafkaCanalClient extends AbstractCanalClient {
@@ -37,10 +36,12 @@ public class KafkaCanalClient extends AbstractCanalClient {
                 while (flag) {
                     try {
                         List<FlatMessage> messages = connector.getFlatListWithoutAck(timeout, unit);
-                        log.info("获取消息 {}", messages);
+                        if(logEnable){
+                            log.info("获取消息 {}", messages);
+                        }
                         if (messages != null) {
                             for (FlatMessage flatMessage : messages) {
-                                messageHandler.handleMessage(flatMessage);
+                                messageHandler.handleMessage(flatMessage, flatMessage.getDatabase());
                             }
                         }
                         connector.ack();
@@ -59,6 +60,8 @@ public class KafkaCanalClient extends AbstractCanalClient {
 
     public static final class Builder {
         private String filter = StringUtils.EMPTY;
+        private String dbName = StringUtils.EMPTY;
+        private Boolean logEnable = Boolean.FALSE;
         private Integer batchSize = 1;
         private Long timeout = 1L;
         private TimeUnit unit = TimeUnit.SECONDS;
@@ -115,6 +118,16 @@ public class KafkaCanalClient extends AbstractCanalClient {
             return this;
         }
 
+        public Builder dbName(String dbName) {
+            this.dbName = dbName;
+            return this;
+        }
+
+        public Builder logEnable(Boolean logEnable) {
+            this.logEnable = logEnable;
+            return this;
+        }
+
         public Builder messageHandler(MessageHandler messageHandler) {
             this.messageHandler = messageHandler;
             return this;
@@ -129,6 +142,8 @@ public class KafkaCanalClient extends AbstractCanalClient {
             kafkaCanalClient.unit = this.unit;
             kafkaCanalClient.batchSize = this.batchSize;
             kafkaCanalClient.timeout = this.timeout;
+            kafkaCanalClient.dbName = this.dbName;
+            kafkaCanalClient.logEnable = this.logEnable;
             return kafkaCanalClient;
         }
     }

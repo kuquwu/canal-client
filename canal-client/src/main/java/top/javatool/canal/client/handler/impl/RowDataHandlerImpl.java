@@ -11,15 +11,12 @@ import java.util.stream.Collectors;
 
 /**
  * @author yang peng
- * @date 2019/3/2917:21
+ * @since 2019/3/2917:21
  */
 public class RowDataHandlerImpl implements RowDataHandler<CanalEntry.RowData> {
 
 
-
     private IModelFactory<List<CanalEntry.Column>> modelFactory;
-
-
 
 
     public RowDataHandlerImpl(IModelFactory modelFactory) {
@@ -37,7 +34,14 @@ public class RowDataHandlerImpl implements RowDataHandler<CanalEntry.RowData> {
                 case UPDATE:
                     Set<String> updateColumnSet = rowData.getAfterColumnsList().stream().filter(CanalEntry.Column::getUpdated)
                             .map(CanalEntry.Column::getName).collect(Collectors.toSet());
-                    R before = modelFactory.newInstance(entryHandler, rowData.getBeforeColumnsList(),updateColumnSet);
+                    if (entryHandler.listenerFields() != null) {
+                        Set<String> listenerFields = entryHandler.listenerFields();
+                        listenerFields.retainAll(updateColumnSet);
+                        if (listenerFields.size() == 0) {
+                            break;
+                        }
+                    }
+                    R before = modelFactory.newInstance(entryHandler, rowData.getBeforeColumnsList(), updateColumnSet);
                     R after = modelFactory.newInstance(entryHandler, rowData.getAfterColumnsList());
                     entryHandler.update(before, after);
                     break;

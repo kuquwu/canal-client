@@ -2,7 +2,6 @@ package top.javatool.canal.client.client;
 
 import com.alibaba.otter.canal.client.CanalConnector;
 import com.alibaba.otter.canal.client.CanalConnectors;
-
 import org.apache.commons.lang.StringUtils;
 import top.javatool.canal.client.handler.MessageHandler;
 
@@ -10,20 +9,20 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author yang peng
- * @date 2019/3/2619:12
+ * @since 2019/3/2619:12
  */
 public class ZookeeperClusterCanalClient extends AbstractCanalClient {
 
 
-
-    public static Builder builder(){
+    public static Builder builder() {
         return Builder.builder();
     }
 
 
-
     public static final class Builder {
         private String filter = StringUtils.EMPTY;
+        private String dbName = StringUtils.EMPTY;
+        private Boolean logEnable = Boolean.FALSE;
         private Integer batchSize = 1;
         private Long timeout = 1L;
         private TimeUnit unit = TimeUnit.SECONDS;
@@ -81,6 +80,16 @@ public class ZookeeperClusterCanalClient extends AbstractCanalClient {
             return this;
         }
 
+        public Builder dbName(String dbName) {
+            this.dbName = dbName;
+            return this;
+        }
+
+        public Builder logEnable(Boolean logEnable) {
+            this.logEnable = logEnable;
+            return this;
+        }
+
         public Builder messageHandler(MessageHandler messageHandler) {
             this.messageHandler = messageHandler;
             return this;
@@ -95,6 +104,8 @@ public class ZookeeperClusterCanalClient extends AbstractCanalClient {
             zookeeperClusterCanalClient.unit = this.unit;
             zookeeperClusterCanalClient.batchSize = this.batchSize;
             zookeeperClusterCanalClient.timeout = this.timeout;
+            zookeeperClusterCanalClient.logEnable = this.logEnable;
+            zookeeperClusterCanalClient.dbName = this.dbName;
             return zookeeperClusterCanalClient;
         }
     }

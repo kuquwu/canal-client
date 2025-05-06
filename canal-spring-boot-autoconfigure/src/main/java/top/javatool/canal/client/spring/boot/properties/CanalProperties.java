@@ -23,7 +23,7 @@ public class CanalProperties {
 
     private Boolean async;
 
-
+    private Boolean logEnable ;
 
     private String server;
 
@@ -33,6 +33,8 @@ public class CanalProperties {
 
 
     private String filter = StringUtils.EMPTY;
+
+    private String dbName = StringUtils.EMPTY;
 
     private Integer batchSize = 1;
 
@@ -106,5 +108,21 @@ public class CanalProperties {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public String getDbName() {
+        return dbName;
+    }
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
+    }
+
+    public Boolean getLogEnable() {
+        return logEnable;
+    }
+
+    public void setLogEnable(Boolean logEnable) {
+        this.logEnable = logEnable;
     }
 }

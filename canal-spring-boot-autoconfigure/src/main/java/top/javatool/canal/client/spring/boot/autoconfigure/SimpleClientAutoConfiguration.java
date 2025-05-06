@@ -45,7 +45,7 @@ public class SimpleClientAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(value = CanalProperties.CANAL_ASYNC, havingValue = "true", matchIfMissing = true)
-    public MessageHandler messageHandler(RowDataHandler<CanalEntry.RowData> rowDataHandler, List<EntryHandler> entryHandlers,
+    public MessageHandler asyncMessageHandler(RowDataHandler<CanalEntry.RowData> rowDataHandler, List<EntryHandler> entryHandlers,
                                          ExecutorService executorService) {
         return new AsyncMessageHandlerImpl(entryHandlers, rowDataHandler, executorService);
     }
@@ -53,7 +53,7 @@ public class SimpleClientAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(value = CanalProperties.CANAL_ASYNC, havingValue = "false")
-    public MessageHandler messageHandler(RowDataHandler<CanalEntry.RowData> rowDataHandler, List<EntryHandler> entryHandlers) {
+    public MessageHandler syncMessageHandler(RowDataHandler<CanalEntry.RowData> rowDataHandler, List<EntryHandler> entryHandlers) {
         return new SyncMessageHandlerImpl(entryHandlers, rowDataHandler);
     }
 
@@ -73,6 +73,8 @@ public class SimpleClientAutoConfiguration {
                 .filter(canalSimpleProperties.getFilter())
                 .timeout(canalSimpleProperties.getTimeout())
                 .unit(canalSimpleProperties.getUnit())
+                .logEnable(canalSimpleProperties.getLogEnable())
+                .dbName(canalSimpleProperties.getDbName())
                 .build();
     }
 

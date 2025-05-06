@@ -5,7 +5,7 @@ import top.javatool.canal.client.model.CanalModel;
 
 /**
  * @author yang peng
- * @date 2019/3/2711:17
+ * @since 2019/3/2711:17
  */
 public class CanalContext {
 

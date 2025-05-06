@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author yang peng
- * @date 2019/3/2916:16
+ * @since 2019/3/2916:16
  */
 public class EntryColumnModelFactory extends AbstractModelFactory<List<CanalEntry.Column>> {
 
@@ -46,7 +46,7 @@ public class EntryColumnModelFactory extends AbstractModelFactory<List<CanalEntr
         Class<R> tableClass = GenericUtil.getTableClass(entryHandler);
         if (tableClass != null) {
             R r = tableClass.newInstance();
-            Map<String, String> columnNames = EntryUtil.getFieldName(r.getClass());
+            Map<String, String> columnNames = EntryUtil.getFieldName(r.getClass(), entryHandler.isLowerCamel());
             for (CanalEntry.Column column : columns) {
                 if (updateColumn.contains(column.getName())) {
                     String fieldName = columnNames.get(column.getName());

@@ -2,7 +2,6 @@ package top.javatool.canal.client.client;
 
 import com.alibaba.otter.canal.client.CanalConnector;
 import com.alibaba.otter.canal.client.CanalConnectors;
-
 import org.apache.commons.lang.StringUtils;
 import top.javatool.canal.client.handler.MessageHandler;
 
@@ -11,22 +10,19 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author yang peng
- * @date 2019/3/2619:12
+ * @since 2019/3/2619:12
  */
 public class SimpleCanalClient extends AbstractCanalClient {
 
 
-
-
-
-
-    public static Builder builder(){
+    public static Builder builder() {
         return Builder.builder();
     }
 
 
     public static class Builder {
         private String filter = StringUtils.EMPTY;
+        private String dbName = StringUtils.EMPTY;
         private Integer batchSize = 1;
         private Long timeout = 1L;
         private TimeUnit unit = TimeUnit.SECONDS;
@@ -35,6 +31,7 @@ public class SimpleCanalClient extends AbstractCanalClient {
         private String destination;
         private String userName;
         private String password;
+        protected Boolean logEnable = Boolean.FALSE;
         private MessageHandler messageHandler;
 
         private Builder() {
@@ -75,6 +72,11 @@ public class SimpleCanalClient extends AbstractCanalClient {
             return this;
         }
 
+        public Builder dbName(String dbName) {
+            this.dbName = dbName;
+            return this;
+        }
+
         public Builder batchSize(Integer batchSize) {
             this.batchSize = batchSize;
             return this;
@@ -87,6 +89,11 @@ public class SimpleCanalClient extends AbstractCanalClient {
 
         public Builder unit(TimeUnit unit) {
             this.unit = unit;
+            return this;
+        }
+
+        public Builder logEnable(Boolean logEnable) {
+            this.logEnable = logEnable;
             return this;
         }
 
@@ -104,6 +111,8 @@ public class SimpleCanalClient extends AbstractCanalClient {
             simpleCanalClient.unit = this.unit;
             simpleCanalClient.batchSize = this.batchSize;
             simpleCanalClient.timeout = this.timeout;
+            simpleCanalClient.logEnable = this.logEnable;
+            simpleCanalClient.dbName = this.dbName;
             return simpleCanalClient;
         }
     }

@@ -69,6 +69,8 @@ public class KafkaClientAutoConfiguration {
                 .filter(canalKafkaProperties.getFilter())
                 .timeout(canalKafkaProperties.getTimeout())
                 .unit(canalKafkaProperties.getUnit())
+                .dbName(canalKafkaProperties.getDbName())
+                .logEnable(canalKafkaProperties.getLogEnable())
                 .build();
     }
 

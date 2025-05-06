@@ -4,7 +4,7 @@ import com.alibaba.otter.canal.protocol.CanalEntry;
 
 /**
  * @author yang peng
- * @date 2019/3/2917:20
+ * @since 2019/3/2917:20
  */
 public interface RowDataHandler<T> {
 

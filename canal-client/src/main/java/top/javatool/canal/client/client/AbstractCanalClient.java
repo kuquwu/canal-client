@@ -2,7 +2,6 @@ package top.javatool.canal.client.client;
 
 import com.alibaba.otter.canal.client.CanalConnector;
 import com.alibaba.otter.canal.protocol.Message;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author yang peng
- * @date 2019/3/2619:11
+ * @since 2019/3/2619:11
  */
 
 public abstract class AbstractCanalClient implements CanalClient {
@@ -32,6 +31,10 @@ public abstract class AbstractCanalClient implements CanalClient {
 
     protected String filter = StringUtils.EMPTY;
 
+    protected String dbName = StringUtils.EMPTY;
+
+    protected Boolean logEnable = Boolean.FALSE;
+
 
     protected Integer batchSize = 1;
 
@@ -42,9 +45,7 @@ public abstract class AbstractCanalClient implements CanalClient {
     protected TimeUnit unit = TimeUnit.SECONDS;
 
 
-
     private MessageHandler messageHandler;
-
 
 
     @Override
@@ -74,10 +75,12 @@ public abstract class AbstractCanalClient implements CanalClient {
                 connector.subscribe(filter);
                 while (flag) {
                     Message message = connector.getWithoutAck(batchSize, timeout, unit);
-                    log.info("获取消息 {}", message);
+                    if (logEnable) {
+                        log.info("获取消息 {}", message);
+                    }
                     long batchId = message.getId();
                     if (message.getId() != -1 && message.getEntries().size() != 0) {
-                        messageHandler.handleMessage(message);
+                        messageHandler.handleMessage(message, dbName);
                     }
                     connector.ack(batchId);
                 }

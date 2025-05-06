@@ -6,12 +6,11 @@ import top.javatool.canal.client.handler.AbstractMessageHandler;
 import top.javatool.canal.client.handler.EntryHandler;
 import top.javatool.canal.client.handler.RowDataHandler;
 
-
 import java.util.List;
 
 /**
  * @author yang peng
- * @date 2019/3/2710:52
+ * @since 2019/3/2710:52
  */
 public class SyncMessageHandlerImpl extends AbstractMessageHandler {
 
@@ -21,8 +20,8 @@ public class SyncMessageHandlerImpl extends AbstractMessageHandler {
     }
 
     @Override
-    public void handleMessage(Message message) {
-        super.handleMessage(message);
+    public void handleMessage(Message message, String dbName) {
+        super.handleMessage(message, dbName);
     }
 
 

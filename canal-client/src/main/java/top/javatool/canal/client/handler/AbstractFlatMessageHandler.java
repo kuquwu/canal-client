@@ -2,8 +2,8 @@ package top.javatool.canal.client.handler;
 
 import com.alibaba.otter.canal.protocol.CanalEntry;
 import com.alibaba.otter.canal.protocol.FlatMessage;
-
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.javatool.canal.client.context.CanalContext;
@@ -34,11 +34,12 @@ public abstract class AbstractFlatMessageHandler implements MessageHandler<FlatM
     }
 
     @Override
-    public void handleMessage(FlatMessage flatMessage) {
+    public void handleMessage(FlatMessage flatMessage, String dbName) {
         log.info("解析消息 {}", flatMessage);
         List<Map<String, String>> data = flatMessage.getData();
         if (data != null && data.size() > 0) {
             for (int i = 0; i < data.size(); i++) {
+                String database = flatMessage.getDatabase();
                 CanalEntry.EventType eventType = CanalEntry.EventType.valueOf(flatMessage.getType());
                 List<Map<String, String>> maps;
                 if (eventType.equals(CanalEntry.EventType.UPDATE)) {
@@ -49,6 +50,9 @@ public abstract class AbstractFlatMessageHandler implements MessageHandler<FlatM
                     maps = Stream.of(data.get(i)).collect(Collectors.toList());
                 }
                 try {
+                    if (StringUtils.isNotBlank(dbName) && !StringUtils.equals(database, dbName)) {
+                        continue;
+                    }
                     EntryHandler<?> entryHandler = HandlerUtil.getEntryHandler(tableHandlerMap, flatMessage.getTable());
                     log.info("消息处理器 {}", entryHandler);
                     if (entryHandler != null) {
